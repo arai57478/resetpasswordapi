@@ -217,7 +217,9 @@ app.route("/post/:postId")
     });
 })
 .put(function(req,res){
-    Post.update({postId:req.params.postId},{title:req.body.title, des:req.body.des,photo:req.body.photo},{overwrite:true},function(err){
+    Post.findOne({postId:req.params.postId},function(err,foundPost){
+        if(foundPost){
+    Post.update({postId:req.params.postId},{title:req.body.title, des:req.body.des,photo:req.body.photo,postId:req.params.postId,postedBy:foundPost.postedBy},{overwrite:true},function(err){
         if(!err){
             res.send("successfully updated post");
         }else{
@@ -225,7 +227,11 @@ app.route("/post/:postId")
             res.send("no post find with such id");
         }
     });
-
+}
+else{
+    res.send("no post find with such id");
+}
+    })
 })
 .delete(function(req,res){
     const userPassword=req.body.password;
