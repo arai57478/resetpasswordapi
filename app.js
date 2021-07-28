@@ -315,10 +315,9 @@ else{
     Post.findOne({postId:req.params.postId},function(err,PostFound){
         if(PostFound){
             User.findOne({username:PostFound.postedBy},function(err,foundUser){
-                if(foundUser){   if(foundPost.postedBy===authData.username){
+                if(foundUser){   if(PostFound.postedBy===authData.username){
                
-                    bcrypt.compare(userPassword, foundUser.password, function(err, result) {
-                        if(result===true){
+                  
                                              Post.findOneAndDelete({postId:req.params.postId},function(err){
                                                    if(!err){
                                                      res.send("successfully deleted");
@@ -327,11 +326,8 @@ else{
                                                       res.send(err);
                                                        }
                                                  });;
-                        }
-                        else{
-                            res.send("please try again wrong password ");
-                         }
-                     });
+                        
+                     
                 }
                 else{
                     res.send("please login to delete the post");
@@ -456,3 +452,5 @@ app.listen(3000,function(){
     console.log("server started at port 3000");
 });
 
+// bcrypt.compare(userPassword, foundUser.password, function(err, result) {
+//     if(result===true){
